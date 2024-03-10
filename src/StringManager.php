@@ -6,7 +6,7 @@ use Random\RandomException;
 
 class StringManager
 {
-    public function sanitizeUsername(string $input): string
+    public static function sanitizeUsername(string $input): string
     {
         $input = preg_replace('/\W/', '', $input);
         $input = preg_replace('/_{2,}/', '_', $input);
@@ -14,7 +14,7 @@ class StringManager
         return strtolower($input);
     }
 
-    public function sanitizeSlug(string $input): string
+    public static function sanitizeSlug(string $input): string
     {
         $input = preg_replace('/^\d+/', '', $input);
         $input = preg_replace('/\W+/', '-', $input);
@@ -22,7 +22,7 @@ class StringManager
         return trim($input, '-');
     }
 
-    public function containsArray(string $input, array $array, bool $all = false): bool
+    public static function containsArray(string $input, array $array, bool $all = false): bool
     {
         $contains = [];
         foreach ($array as $element) {
@@ -35,40 +35,40 @@ class StringManager
         }
     }
 
-    public function containsPattern(string $input, string $pattern): bool
+    public static function containsPattern(string $input, string $pattern): bool
     {
         return (bool)preg_match($pattern, $input);
     }
 
-    public function containsText(string $input, string $searchTerm): bool
+    public static function containsText(string $input, string $searchTerm): bool
     {
         return str_contains($input, $searchTerm);
     }
 
-    public function filterEnglishAlphabetCharacters(string $input, bool $removeSpaces = true): string
+    public static function filterEnglishAlphabetCharacters(string $input, bool $removeSpaces = true): string
     {
         $pattern = $removeSpaces ? '/[^a-zA-Z]/' : '/[^a-zA-Z ]/';
         return trim(preg_replace($pattern, '', $input));
     }
 
-    public function filterEnglishAlphanumericCharacters(string $input, bool $removeSpaces = true): string
+    public static function filterEnglishAlphanumericCharacters(string $input, bool $removeSpaces = true): string
     {
         $pattern = $removeSpaces ? '/[^a-zA-Z0-9]/' : '/[^a-zA-Z0-9 ]/';
         return trim(preg_replace($pattern, '', $input));
     }
 
-    public function filterNumericCharacters(string $input, bool $removeSpaces = true): string
+    public static function filterNumericCharacters(string $input, bool $removeSpaces = true): string
     {
         $pattern = $removeSpaces ? '/[^0-9]/' : '/[^0-9 ]/';
         return trim(preg_replace($pattern, '', $input));
     }
 
-    public function matchPattern(string $input, string $pattern): bool
+    public static function matchPattern(string $input, string $pattern): bool
     {
         return (bool)preg_match('/' . str_replace('/', '\/', $pattern) . '/', $input);
     }
 
-    public function removeCharacters(string $input, string|array $charactersToRemove): string
+    public static function removeCharacters(string $input, string|array $charactersToRemove): string
     {
         if (is_array($charactersToRemove)) {
             $charactersToRemove = implode('', $charactersToRemove);
@@ -76,18 +76,18 @@ class StringManager
         return preg_replace('/[' . preg_quote($charactersToRemove, '/') . ']/u', '', $input);
     }
 
-    public function removeSpaces(string $input): string
+    public static function removeSpaces(string $input): string
     {
         return str_replace(' ', '', $input);
     }
 
-    public function reverse(string $input): string
+    public static function reverse(string $input): string
     {
         return strrev($input);
     }
 
 
-    public function truncate(string $input, int $maxChars, string $ellipsis = '...'): string
+    public static function truncate(string $input, int $maxChars, string $ellipsis = '...'): string
     {
         if ($maxChars < 1) {
             return '';
@@ -105,18 +105,18 @@ class StringManager
         return $truncatedText;
     }
 
-    public function validateUuid(string $input): bool
+    public static function validateUuid(string $input): bool
     {
         $pattern = '/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/';
         return (bool)preg_match($pattern, $input);
     }
 
-    public function capitalizeFirstLetter(string $input): string
+    public static function capitalizeFirstLetter(string $input): string
     {
         return ucfirst($input);
     }
 
-    public function convertToCamelCase(string $input): string
+    public static function convertToCamelCase(string $input): string
     {
         $input = strtolower($input);
         $input = preg_replace('/[^a-zA-Z0-9]+/', ' ', $input);
@@ -125,7 +125,7 @@ class StringManager
         return lcfirst($input);
     }
 
-    public function generateRandomString(int $length = 10): string
+    public static function generateRandomString(int $length = 10): string
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -137,14 +137,14 @@ class StringManager
     }
 
 
-    public function convertToSnakeCase(string $input): string
+    public static function convertToSnakeCase(string $input): string
     {
         $input = preg_replace('/\s+/u', '', ucwords($input));
         return strtolower(preg_replace('/(?<!^)[A-Z]/u', '_$0', $input));
     }
 
 
-    public function obfuscateEmail(string $email): string
+    public static function obfuscateEmail(string $email): string
     {
         return str_replace(['@', '.'], [' at ', ' dot '], $email);
     }
@@ -152,7 +152,7 @@ class StringManager
     /**
      * @throws RandomException
      */
-    public function generateUuidV4(): string
+    public static function generateUuidV4(): string
     {
         $data = random_bytes(16);
         $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
@@ -161,18 +161,18 @@ class StringManager
     }
 
 
-    public function extractEmails(string $input): array
+    public static function extractEmails(string $input): array
     {
         preg_match_all('/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i', $input, $matches);
         return $matches[0];
     }
 
-    public function convertToTitleCase(string $input): string
+    public static function convertToTitleCase(string $input): string
     {
         return ucwords(strtolower($input));
     }
 
-    public function maskString(string $input, int $start = 0, int $length = null, string $maskChar = '*'): string
+    public static function maskString(string $input, int $start = 0, int $length = null, string $maskChar = '*'): string
     {
         if (is_null($length)) {
             $length = strlen($input) - $start;
@@ -181,18 +181,18 @@ class StringManager
         return substr_replace($input, $mask, $start, $length);
     }
 
-    public function levenshteinDistance(string $input1, string $input2): int
+    public static function levenshteinDistance(string $input1, string $input2): int
     {
         return levenshtein($input1, $input2);
     }
 
-    public function similarTextPercentage(string $input1, string $input2): float
+    public static function similarTextPercentage(string $input1, string $input2): float
     {
         similar_text($input1, $input2, $percent);
         return $percent;
     }
 
-    public function convertToKebabCase(string $input): string
+    public static function convertToKebabCase(string $input): string
     {
         $input = preg_replace('/\s+/u', '-', ucwords($input));
         $input = strtolower(preg_replace('/(?<!^)[A-Z]/u', '-$0', $input));
