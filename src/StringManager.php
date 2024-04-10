@@ -6,20 +6,42 @@ use Random\RandomException;
 
 class StringManager
 {
-    public static function sanitizeUsername(string $input): string
+    public static function sanitizeUsername(string $input, $toLowerCase = true): string
     {
+        $input = self::convertPersianNumbersToEnglish($input);
         $input = preg_replace('/\W/', '', $input);
         $input = preg_replace('/_{2,}/', '_', $input);
         $input = trim($input, '_');
+        return $toLowerCase ? strtolower($input) : $input;
+    }
+
+    public static function sanitizePassword(string $input): string
+    {
+        $input = self::convertPersianNumbersToEnglish($input);
         return strtolower($input);
     }
 
-    public static function sanitizeSlug(string $input): string
+    public static function sanitizeSlug(string $input, $toLowerCase = true): string
     {
+        $input = self::convertPersianNumbersToEnglish($input);
         $input = preg_replace('/^\d+/', '', $input);
         $input = preg_replace('/\W+/', '-', $input);
         $input = preg_replace('/-{2,}/', '-', $input);
-        return trim($input, '-');
+        $input = trim($input, '-');
+        return $toLowerCase ? strtolower($input) : $input;
+    }
+
+    public static function convertPersianNumbersToEnglish(string $input): string
+    {
+        $persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        $englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+        return str_replace($persianNumbers, $englishNumbers, $input);
+    }
+
+    public static function isInArray(string $input, array $array): bool
+    {
+        return in_array($input, $array);
     }
 
     public static function containsArray(string $input, array $array, bool $all = false): bool
