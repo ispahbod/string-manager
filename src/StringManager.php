@@ -29,10 +29,10 @@ class StringManager
             $contains[] = str_contains($input, $element);
         }
         if ($all) {
-            return count(array_filter($contains)) == count($array);
-        } else {
-            return count(array_filter($contains)) > 0;
+            return count(array_filter($contains)) === count($array);
         }
+
+        return count(array_filter($contains)) > 0;
     }
 
     public static function containsPattern(string $input, string $pattern): bool
@@ -86,7 +86,6 @@ class StringManager
         return strrev($input);
     }
 
-
     public static function truncate(string $input, int $maxChars, string $ellipsis = '...'): string
     {
         if ($maxChars < 1) {
@@ -131,18 +130,16 @@ class StringManager
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
         }
         return $randomString;
     }
-
 
     public static function convertToSnakeCase(string $input): string
     {
         $input = preg_replace('/\s+/u', '', ucwords($input));
         return strtolower(preg_replace('/(?<!^)[A-Z]/u', '_$0', $input));
     }
-
 
     public static function obfuscateEmail(string $email): string
     {
@@ -159,7 +156,6 @@ class StringManager
         $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
-
 
     public static function extractEmails(string $input): array
     {
@@ -197,5 +193,13 @@ class StringManager
         $input = preg_replace('/\s+/u', '-', ucwords($input));
         $input = strtolower(preg_replace('/(?<!^)[A-Z]/u', '-$0', $input));
         return trim($input, '-');
+    }
+
+    public static function identifyLoginFieldType(string $input): string
+    {
+        if (filter_var($input, FILTER_VALIDATE_EMAIL)) {
+            return 'email';
+        }
+        return (preg_match('/^\+?\d{10,15}$/', $input)) ? 'phone_number' : 'username';
     }
 }
