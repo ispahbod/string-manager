@@ -9,6 +9,7 @@ class StringManager
     public static function sanitizeUsername(string $input, $toLowerCase = true): string
     {
         $input = self::convertPersianNumbersToEnglish($input);
+        $input = preg_replace('/\s+/', '_', $input);
         $input = preg_replace('/\W/', '', $input);
         $input = preg_replace('/_{2,}/', '_', $input);
         $input = trim($input, '_');
@@ -223,5 +224,108 @@ class StringManager
             return 'email';
         }
         return (preg_match('/^\+?\d{10,15}$/', $input)) ? 'phone_number' : 'username';
+    }
+    
+    public static function formatAsBold(...$strings): string
+    {
+        return '<b>' . implode(' ', $strings) . '</b>';
+    }
+
+    public static function formatAsItalic(...$strings): string
+    {
+        return '<i>' . implode(' ', $strings) . '</i>';
+    }
+
+    public static function formatAsUnderline(...$strings): string
+    {
+        return '<u>' . implode(' ', $strings) . '</u>';
+    }
+
+    public static function formatAsStrike(...$strings): string
+    {
+        return '<strike>' . implode(' ', $strings) . '</strike>';
+    }
+
+    public static function createLink($text, $url): string
+    {
+        return '<a href="' . htmlspecialchars($url) . '">' . $text . '</a>';
+    }
+
+    public static function formatAsCode($text): string
+    {
+        return "<code>$text</code>";
+    }
+
+    public static function formatAsPre(...$strings): string
+    {
+        return '<pre>' . implode(' ', $strings) . '</pre>';
+    }
+
+    public static function formatAsBlockquote(...$strings): string
+    {
+        return '<blockquote>' . implode(' ', $strings) . '</blockquote>';
+    }
+
+    public static function concatenate($array): string
+    {
+        return implode('', $array);
+    }
+
+    public static function applyEach(array $array, callable $callable, ?int $limit = null): string
+    {
+        $result = array_map($callable, $array);
+        if ($limit !== null) {
+            $result = array_slice($result, 0, $limit);
+        }
+        return implode(' ', $result);
+    }
+
+    public static function singleNewLine(): string
+    {
+        return PHP_EOL;
+    }
+
+    public static function doubleNewLine(): string
+    {
+        return PHP_EOL . PHP_EOL;
+    }
+
+    public static function joinWithNewLine($array): string
+    {
+        return implode(PHP_EOL, $array);
+    }
+
+    public static function repeatString($text, $times): string
+    {
+        return str_repeat($text, $times);
+    }
+
+    public static function repeatStringWithNewLine($text, $times): string
+    {
+        return rtrim(str_repeat($text . PHP_EOL, $times), PHP_EOL);
+    }
+
+    public static function concatenateWithSpace(...$strings): string
+    {
+        return implode(' ', $strings);
+    }
+
+    public static function concatenateWithNewLine(...$strings): string
+    {
+        return implode(' ', $strings) . PHP_EOL;
+    }
+
+    public static function concatenateWithDoubleNewLine(...$strings): string
+    {
+        return implode(' ', $strings) . PHP_EOL . PHP_EOL;
+    }
+
+    public static function concatenateWithLeadingNewLine(...$strings): string
+    {
+        return PHP_EOL . implode(' ', $strings);
+    }
+    public static function conditionalOutput($condition, $trueValue, $falseValue = ''): string
+    {
+        return $condition ? $trueValue : $falseValue;
     }
 }
