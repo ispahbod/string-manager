@@ -15,7 +15,12 @@ class StringManager
         $input = trim($input, '_');
         return $toLowerCase ? strtolower($input) : $input;
     }
-
+    public static function sanitizeEmail(string $input): string
+    {
+        $input = self::convertPersianNumbersToEnglish($input);
+        $input = str_replace('.', '', $input);
+        return $input;
+    }
     public static function sanitizePassword(string $input): string
     {
         $input = self::convertPersianNumbersToEnglish($input);
