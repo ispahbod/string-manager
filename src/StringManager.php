@@ -2,6 +2,7 @@
 
 namespace Ispahbod\StringManager;
 
+use Ispahbod\EmailManager\EmailManager;
 use Random\RandomException;
 
 class StringManager
@@ -15,12 +16,14 @@ class StringManager
         $input = trim($input, '_');
         return $toLowerCase ? strtolower($input) : $input;
     }
+
     public static function sanitizeEmail(string $input): string
     {
         $input = self::convertPersianNumbersToEnglish($input);
-        $input = str_replace('.', '', $input);
+        $input = EmailManager::cleanEmail($input);
         return $input;
     }
+
     public static function sanitizePassword(string $input): string
     {
         $input = self::convertPersianNumbersToEnglish($input);
@@ -230,7 +233,7 @@ class StringManager
         }
         return (preg_match('/^\+?\d{10,15}$/', $input)) ? 'phone_number' : 'username';
     }
-    
+
     public static function formatAsBold(...$strings): string
     {
         return '<b>' . implode(' ', $strings) . '</b>';
@@ -329,6 +332,7 @@ class StringManager
     {
         return PHP_EOL . implode(' ', $strings);
     }
+
     public static function conditionalOutput($condition, $trueValue, $falseValue = ''): string
     {
         return $condition ? $trueValue : $falseValue;
