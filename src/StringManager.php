@@ -20,8 +20,7 @@ class StringManager
     public static function sanitizeEmail(string $input): string
     {
         $input = self::convertPersianNumbersToEnglish($input);
-        $input = EmailManager::cleanEmail($input);
-        return $input;
+        return EmailManager::cleanEmail($input);
     }
 
     public static function sanitizePassword(string $input): string
