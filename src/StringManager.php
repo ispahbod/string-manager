@@ -215,7 +215,7 @@ class StringManager
     public static function similarTextPercentage(string $input1, string $input2): float
     {
         similar_text($input1, $input2, $percent);
-        return round($percent,3);
+        return round($percent,1);
     }
 
     public static function convertToKebabCase(string $input): string
