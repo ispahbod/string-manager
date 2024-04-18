@@ -273,9 +273,9 @@ class StringManager
         return '<blockquote>' . implode(' ', $strings) . '</blockquote>';
     }
 
-    public static function concatenate($array): string
+    public static function concatenate(...$strings): string
     {
-        return implode('', $array);
+        return implode('', $strings);
     }
 
     public static function applyEach(array $array, callable $callable, ?int $limit = null): string
