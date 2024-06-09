@@ -47,9 +47,9 @@ class StringManager
         return str_replace($persianNumbers, $englishNumbers, $input);
     }
 
-    public static function isInArray(string $input, array $array): bool
+    public static function isInArray(?string $input, array $array): bool
     {
-        return in_array($input, $array);
+        return is_null($input) ? false : in_array($input, $array);
     }
 
     public static function containsArray(string $input, array $array, bool $all = false): bool
@@ -215,7 +215,7 @@ class StringManager
     public static function similarTextPercentage(string $input1, string $input2): float
     {
         similar_text($input1, $input2, $percent);
-        return round($percent,1);
+        return round($percent, 1);
     }
 
     public static function convertToKebabCase(string $input): string
